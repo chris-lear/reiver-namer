@@ -1,6 +1,7 @@
 'use client'
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -18,9 +19,9 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-
 import { useState, useEffect } from 'react';
 
+import Background from './background.jpg';
 
 function toTitleCase(str) {
     return str.replace(
@@ -244,7 +245,15 @@ export default function Home() {
   }
 
   return (
-    <Paper elevation={3} sx={{p:3, maxWidth:'600px', width:'80%', marginLeft:'auto', marginRight: 'auto', marginTop:0, marginBottom:0}}>
+    <Box sx={{
+      display:'flex',
+      backgroundImage:`url("${Background.src}")`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      minHeight:'95vh',
+      }}>
+      <Paper elevation={3} sx={{p:3, maxWidth:'650px', width:'80%', marginLeft:'auto', marginRight: 'auto', backgroundColor:'rgba(255,255,255,0.9)'}}>
       <Typography variant='h1'>Reiver Namer</Typography>
       <form onSubmit={makeNames}>
       <Stack spacing={2}>
@@ -297,5 +306,6 @@ export default function Home() {
       :'')
     }
     </Paper>
+    </Box>
   )
 }
