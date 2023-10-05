@@ -273,7 +273,7 @@ export default function Home() {
       minHeight:'95vh',
       }}>
       <Paper elevation={3} sx={{p:3, maxWidth:'900px', width:'80%', marginLeft:'auto', marginRight: 'auto', backgroundColor:'rgba(255,255,255,0.9)'}}>
-      <Typography variant='h1'>Reiver Namer</Typography>
+      <Typography variant='h2'>Reiver Namer</Typography>
       <form onSubmit={makeNames}>
       <Stack spacing={2}>
 
@@ -311,7 +311,7 @@ export default function Home() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '500px',
+            width: '300px',
             height:'400px',
             bgcolor: 'background.paper',
             boxShadow: 24,
