@@ -14,14 +14,31 @@ import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import Modal from '@mui/material/Modal';
 
+/*
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
+*/
 import { useState, useEffect } from 'react';
 
 import Background from './background.jpg';
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import localFont from 'next/font/local'
+import ReactPlayer from "react-player";
+
+const celtic = localFont({
+  src: './CELTG.woff',
+  display: 'swap',
+})
+
+const theme = createTheme({
+
+  typography: {
+    fontFamily: `${celtic.style.fontFamily}`,
+  },
+});
 
 function toTitleCase(str) {
     return str.replace(
@@ -242,9 +259,11 @@ export default function Home() {
     setReiverName((adjective +' '+ title + ' '+ name2 +' '+ surname).replace(/\s\s*/g,' '))
 
 
+
   }
 
   return (
+    <ThemeProvider theme={theme}>
     <Box sx={{
       display:'flex',
       backgroundImage:`url("${Background.src}")`,
@@ -253,7 +272,7 @@ export default function Home() {
       backgroundRepeat: 'no-repeat',
       minHeight:'95vh',
       }}>
-      <Paper elevation={3} sx={{p:3, maxWidth:'650px', width:'80%', marginLeft:'auto', marginRight: 'auto', backgroundColor:'rgba(255,255,255,0.9)'}}>
+      <Paper elevation={3} sx={{p:3, maxWidth:'900px', width:'80%', marginLeft:'auto', marginRight: 'auto', backgroundColor:'rgba(255,255,255,0.9)'}}>
       <Typography variant='h1'>Reiver Namer</Typography>
       <form onSubmit={makeNames}>
       <Stack spacing={2}>
@@ -281,31 +300,40 @@ export default function Home() {
         <Button variant='contained' disabled={disabled} type='submit'>Go!</Button>
       </Stack>
       </form>
-    {(reiverName? <Modal
-        open={!!reiverName}
-        onClose={()=>setReiverName('')}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-      <Card sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '500px',
-        height:'400px',
-        bgcolor: 'background.paper',
-        boxShadow: 24,
-        p: 4,
-      }}>
-        <Typography variant='h3'>Your Reiver Name is...</Typography>
-        <Typography variant='h4' sx={{p:6, textAlign: 'center'}}>{reiverName}</Typography>
-      </Card>
+        {(reiverName? <Modal
+          open={!!reiverName}
+          onClose={()=>setReiverName('')}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Card sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '500px',
+            height:'400px',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}>
+            <Typography variant='h3'>Your Reiver Name is...</Typography>
+            <Typography variant='h4' sx={{p:6, textAlign: 'center'}}>{reiverName}</Typography>
+          </Card>
 
-      </Modal>
-      :'')
-    }
+        </Modal>
+        :'')
+        }
+        {(reiverName?  <ReactPlayer
+            url='https://www.youtube.com/shorts/trENa1LZYRk'
+            playing={true}
+            width='1px'
+            height='1px'
+          />
+        :'')
+        }
     </Paper>
     </Box>
+    </ThemeProvider>
   )
 }
