@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
+import Modal from '@mui/material/Modal';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -22,19 +23,50 @@ import { useState, useEffect } from 'react';
 
 
 function toTitleCase(str) {
-  return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+    return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
 }
 
 function pickfrom(list) {
   return list[Math.floor(Math.random()*list.length)];
 }
 
+
+
 const adjectives = [
-  'Little',
-  'Big',
-  'Young',
-  'Old',
-  ];
+'Little',
+'Big',
+'Young',
+'Old',
+'Bold',
+'Ramish',
+'Lang',
+'Muckle-Mouthed',
+'Sneaky',
+'Stubborn',
+'Devious',
+'Dim',
+'Unlucky',
+'Boastful',
+'Foolish',
+'Callous',
+'Rude',
+'Vain',
+'Idle',
+'Cowardly',
+'Nasty',
+'Silly',
+'Mad',
+'Wee',
+'Black',
+'Bloody',
+'Lucky',
+'Red'
+];
 
 const titles = {
   'm': [
@@ -53,8 +85,76 @@ const titles = {
 }
 
 const surnames = [
-  'Burns',
-  'Wilson'
+'Archbold',
+'Armstrong',
+'Beattie',
+'Bell',
+'Burns',
+'Carleton',
+'Carlisle',
+'Carnaby',
+'Carrs',
+'Carruthers',
+'Chamberlain',
+'Charlton',
+'Collingwood',
+'Crisp',
+'Crozier',
+'Cuthbert',
+'Hume',
+'Watson',
+'Wilson',
+'Woodrington',
+'Young',
+'Dacre',
+'Davison',
+'Dixon',
+'Dodd',
+'Douglas',
+'Dunne',
+'Elliot',
+'Fenwick',
+'Forster',
+'Graham',
+'Gray',
+'Hall',
+'Hedley',
+'Henderson',
+'Heron',
+'Hetherington',
+'Irvine',
+'Irving',
+'Johnstone',
+'Kerr',
+'Laidlaw',
+'Little',
+'Lowther',
+'Maxwell',
+'Milburn',
+'Musgrove',
+'Nixon',
+'Noble',
+'Ogle',
+'Oliver',
+'Potts',
+'Pringle',
+'Wake',
+'Radcliffe',
+'Reade',
+'Ridley',
+'Robson',
+'Routledge',
+'Rutherford',
+'Salkeld',
+'Scott',
+'Selby',
+'Shaftoe',
+'Storey',
+'Simpson',
+'Tait',
+'Taylor',
+'Trotter',
+'Turnbull'
 ];
 
 
@@ -78,7 +178,8 @@ export default function Home() {
   }, [firstName, dadsName, grandadsName, profession, town, lack, gender]);
 
   const timer = ms => new Promise(res => setTimeout(res, ms))
-  async function makeNames() {
+  async function makeNames(event) {
+    event.preventDefault();
 
     for (var i = 5; i < 20; i++) {
       makeName()
@@ -134,7 +235,7 @@ export default function Home() {
       if (Math.random()<0.5) {
         surname = 'the ' + toTitleCase(profession);
       } else {
-        surname = "o'" + town;
+        surname = "o'" + toTitleCase(town);
       }
     }
     setReiverName((adjective +' '+ title + ' '+ name2 +' '+ surname).replace(/\s\s*/g,' '))
@@ -145,6 +246,7 @@ export default function Home() {
   return (
     <Paper elevation={3} sx={{p:3, maxWidth:'600px', width:'80%', marginLeft:'auto', marginRight: 'auto', marginTop:0, marginBottom:0}}>
       <Typography variant='h1'>Reiver Namer</Typography>
+      <form onSubmit={makeNames}>
       <Stack spacing={2}>
 
         <TextField onChange={(e)=>setFirstName(e.target.value)} label="First name" helperText="One syllable version only" variant="filled" />
@@ -167,11 +269,33 @@ export default function Home() {
           </Select>
           <FormHelperText>Your gender</FormHelperText>
         </FormControl>
-        <Button onClick={makeNames} variant='contained' disabled={disabled}>Go!</Button>
+        <Button variant='contained' disabled={disabled} type='submit'>Go!</Button>
       </Stack>
-      <Card sx={{p:3, m:3}}>
-        <Typography variant='h4'>{reiverName}</Typography>
+      </form>
+    {(reiverName? <Modal
+        open={!!reiverName}
+        onClose={()=>setReiverName('')}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+      <Card sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '500px',
+        height:'400px',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}>
+        <Typography variant='h3'>Your Reiver Name is...</Typography>
+        <Typography variant='h4' sx={{p:6, textAlign: 'center'}}>{reiverName}</Typography>
       </Card>
+
+      </Modal>
+      :'')
+    }
     </Paper>
   )
 }
